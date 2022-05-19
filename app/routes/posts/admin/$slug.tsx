@@ -1,7 +1,7 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
-import { useActionData, useLoaderData, useTransition } from "@remix-run/react";
+import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Post, upsertPost } from "~/models/post.server";
+import { deletePost, Post, upsertPost } from "~/models/post.server";
 import type { LoaderFunction } from "@remix-run/node";
 import { getPost } from "~/models/post.server";
 import PostForm from "~/components/PostForm/PostForm";
@@ -59,6 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
     await upsertPost({ title, slug, markdown });
 
     return redirect("/posts/admin");
+
 };
 
 
@@ -66,19 +67,16 @@ const AdminSlug = () => {
     const errors = useActionData();
     const transition = useTransition();
     const isCreating = Boolean(transition.submission);
+
     const { post } = useLoaderData() as LoaderData;
 
     return (
-        // <div>
-        //     <p>{post.title}</p>
-        //     <p>{post.slug}</p>
-        //     <p>{post.markdown}</p>
-        // </div>
         <PostForm
             errors={errors}
             isCreating={isCreating}
             method="post"
-            intialValues={post}
+            initialValues={post}
+            btnLabel="Modify Post"
         />
     );
 }

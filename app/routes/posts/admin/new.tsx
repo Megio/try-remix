@@ -66,6 +66,7 @@ const NewPost = () => {
             method="post"
             errors={errors}
             isCreating={isCreating}
+            btnLabel="Create a Post"
         />
     );
 }
